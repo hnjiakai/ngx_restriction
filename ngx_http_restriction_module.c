@@ -312,7 +312,7 @@ static ngx_int_t ngx_http_restriction_handler(ngx_http_request_t *r) {
   ngx_http_restriction_main_conf_t  *conf ;
   conf = ngx_http_get_module_main_conf(r, ngx_http_restriction_module);
   //test
-  ngx_http_restriction_rbtree_expire(r, conf);
+  //ngx_http_restriction_rbtree_expire(r, conf);
 
   rc = NGX_DECLINED ;
   if (conf->interval == -1) {
@@ -407,6 +407,10 @@ static ngx_int_t ngx_http_restriction_rbtree_lookup(ngx_http_request_t *r ,
   }
 
   /*到达这里说明没找到，node为哨兵节点*/
+  
+  
+  //在分配空间前进行空间的清理
+  ngx_http_restriction_rbtree_expire(r, conf);
   /*申请一块连续内存*/
   //ngx_rbtree_node_t非data长度+ngx_http_restriction_node_t非data长度+总数据data长度
   //ngx_rbtree_node_t的data位置开始存储ngx_http_restriction_node_t
